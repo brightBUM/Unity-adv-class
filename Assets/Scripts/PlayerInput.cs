@@ -13,9 +13,11 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float rayCastDistance = 10f;
     [SerializeField] LayerMask damageLayer;
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] ProgressBarUI progressBarUI;
     [SerializeField] int magSize = 7;
     [SerializeField] float reloadTime = 2f;
     int count;
+    float reloadTimer = 0f;
     private CharacterController characterController;
     Vector3 hitPoint;
     bool inRange;
@@ -72,9 +74,20 @@ public class PlayerInput : MonoBehaviour
     }
     IEnumerator Reload()
     {
-        yield return new WaitForSeconds(reloadTime);
+        reloadTimer = 0f;
+        progressBarUI.ToggleProgressBar(true);
+
+        while(reloadTimer<=reloadTime)
+        {
+            reloadTimer += Time.deltaTime;
+            progressBarUI.UpdateUIFillAmount(reloadTimer / reloadTime);
+
+            yield return null; //skips the frame / executes 1 frame
+        }
 
         count = magSize;
+        progressBarUI.ToggleProgressBar(false);
+
     }
     private void Rotation()
     {
