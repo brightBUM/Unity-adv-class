@@ -9,11 +9,11 @@ public class ProgressBarUI : MonoBehaviour
 {
     [SerializeField] GameObject progressbarObject;
     [SerializeField] Image progressBar;
-    [SerializeField] Transform playerTransform;
+    [SerializeField] Transform targetTransform;
     Vector3 offset;
     private void Start()
     {
-        offset = playerTransform.position - transform.position;
+        offset = targetTransform.position - transform.position;
     }
     public void ToggleProgressBar(bool value)
     {
@@ -25,6 +25,9 @@ public class ProgressBarUI : MonoBehaviour
     }
     private void Update()
     {
-        transform.position = playerTransform.position - offset;
+        if(targetTransform!=null)
+        {
+            transform.position = targetTransform.position - offset;
+        }
     }
 }

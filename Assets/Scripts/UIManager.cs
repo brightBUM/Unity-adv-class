@@ -4,10 +4,10 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI ammoText;
-    [SerializeField] PlayerController playerController;
+    
     private void OnEnable()
     {
-        playerController.OnAmmoChangeAction += UpdateAmmoText;
+        PlayerController.OnAmmoChangeAction += UpdateAmmoText;
     }
 
     private void UpdateAmmoText(string ammoText)
@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        playerController.OnAmmoChangeAction -= UpdateAmmoText;
+        PlayerController.OnAmmoChangeAction -= UpdateAmmoText;
 
     }
 }

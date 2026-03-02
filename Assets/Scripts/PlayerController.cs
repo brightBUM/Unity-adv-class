@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float bulletSpeed = 5f;
     [SerializeField] private float rayCastDistance = 10f;
     [SerializeField] LayerMask damageLayer;
+    [SerializeField] Animator animator;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] ProgressBarUI progressBarUI;
     [SerializeField] int magSize = 7;
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     bool inRange;
 
     //public fields
-    public Action<string> OnAmmoChangeAction;
+    public static Action<string> OnAmmoChangeAction;
     
     private void OnEnable()
     {
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
         count = magSize;
     }
 
@@ -51,21 +53,13 @@ public class PlayerController : MonoBehaviour
     {
         if (count > 0)
         {
-            //var bulletItem = Instantiate(bulletPrefab,
-            //                             transform.position + transform.forward,
-            //                             Quaternion.identity);
-            //bulletItem.GetComponent<Rigidbody>().linearVelocity = transform.forward * bulletSpeed;
-
-            
-            //inRange = Physics.Raycast(transform.position, transform.forward, rayCastDistance, damageLayer);
-            
             if(Physics.Raycast(transform.position,transform.forward, out RaycastHit hitInfo))
             {
                 inRange = true;
                 var damageable = hitInfo.collider.GetComponent<IDamageable>();
                 if (damageable!=null)
                 {
-                    damageable.TakeDamage(10);
+                    damageable.TakeDamage(10,hitInfo.point);
                 }
             }
             else
@@ -131,7 +125,8 @@ public class PlayerController : MonoBehaviour
     private void Movement(Vector2 moveInput)
     {
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
-
+        animator.SetBool("move", move.magnitude != 0f);
+        animator.SetFloat("moveY", moveInput.y);
         characterController.Move(move * Time.deltaTime * moveSpeed);
     }
 
@@ -146,6 +141,6 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = inRange ? Color.green : Color.red;
-        Gizmos.DrawLine(transform.position, transform.forward * rayCastDistance);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * rayCastDistance);
     }
 }

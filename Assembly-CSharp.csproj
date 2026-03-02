@@ -61,15 +61,23 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.58f2\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\ExplodeBarrel.cs" />
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\MoveCamForward.cs" />
     <Compile Include="Assets\Scripts\ProgressBarUI.cs" />
     <Compile Include="Assets\PBS Materials Variety Pack\zzz\MaterialRandomizerScript.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Knockable.cs" />
+    <Compile Include="Assets\Scripts\Destroyable.cs" />
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyBelowY.cs" />
     <Compile Include="Assets\Scenes\Scripts\RotateObject.cs" />
     <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\PlayerInput.cs" />
     <Compile Include="Assets\PBS Materials Variety Pack\zzz\MaterialRandomizer.cs" />
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyOnClick.cs" />
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyOnHit.cs" />
+    <Compile Include="Assets\PBS Barrels and Crates\Scripts\CrateGridBuilder.cs" />
     <Compile Include="Assets\Scenes\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
   </ItemGroup>
@@ -99,6 +107,7 @@
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\PBS Barrels and Crates\readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
