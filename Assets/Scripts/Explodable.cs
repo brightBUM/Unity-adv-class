@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ public class Explodable : MonoBehaviour,IDamageable
 {
     [SerializeField] float explosionRadius = 5f;
     [SerializeField] GameObject explosionVFX;
+    [SerializeField] LayerMask damageLayer;
+    bool triggered;
     public int Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public void Die()
@@ -14,18 +17,39 @@ public class Explodable : MonoBehaviour,IDamageable
 
     public void TakeDamage(int amount, Vector3 hitPoint)
     {
-        Instantiate(explosionVFX,transform.position,Quaternion.identity);
-        var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        if (triggered)
+            return;
+
+        triggered = true;
+
+        StartCoroutine(DelayedExplosion());
+    }
+
+    IEnumerator DelayedExplosion()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        var colliders = Physics.OverlapSphere(transform.position, explosionRadius, damageLayer);
+        //Debug.Log(transform.name);
         foreach (var collider in colliders)
         {
-            collider.GetComponent<IDamageable>().TakeDamage(100,transform.position);
-            //collider.GetComponent<Rigidbody>().add
+            if (collider.transform == this.transform)
+                continue;
+
+            //Debug.Log(collider.name);
+            var damageables = collider.GetComponents<IDamageable>();
+            foreach(var damageable in damageables)
+            {
+                    damageable.TakeDamage(100, transform.position);
+            }
+            
         }
-        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()
     {
+        
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
