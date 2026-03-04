@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] ProgressBarUI progressBarUI;
+    [SerializeField] ParticleSystem muzzleFlashVFX;
     [SerializeField] int magSize = 7;
     [SerializeField] float reloadTime = 2f;
 
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         if (count > 0)
         {
+            muzzleFlashVFX.Play();
             if(Physics.Raycast(transform.position,transform.forward, out RaycastHit hitInfo))
             {
                 inRange = true;
@@ -124,10 +126,15 @@ public class PlayerController : MonoBehaviour
 
     private void Movement(Vector2 moveInput)
     {
-        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
-        animator.SetBool("move", move.magnitude != 0f);
-        animator.SetFloat("moveY", moveInput.y);
-        characterController.Move(move * Time.deltaTime * moveSpeed);
+        Vector3 worldMove = new Vector3(moveInput.x, 0, moveInput.y);
+        //convert world to local w.r.t player transform
+        Vector3 localMove = transform.InverseTransformDirection(worldMove);
+        //local conversion only for the animator 
+        animator.SetBool("move", worldMove.magnitude != 0f);
+        animator.SetFloat("moveX", localMove.x,0.1f,Time.deltaTime);
+        animator.SetFloat("moveY", localMove.z,0.1f, Time.deltaTime); //here Y is Z
+
+        characterController.Move(worldMove * Time.deltaTime * moveSpeed);
     }
 
     private void OnDisable()
