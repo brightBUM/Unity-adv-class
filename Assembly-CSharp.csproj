@@ -84,6 +84,7 @@
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\CrateGridBuilder.cs" />
     <Compile Include="Assets\Scenes\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Hovl Studio\Toon Projectiles 2\Scripts\ProjectileMover.cs" />
+    <Compile Include="Assets\Scripts\Explodable.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     {
         UpdateHealth(amount);
 
-        if(knockReady) StartCoroutine(KnockBackObject(hitPoint));
+        /*if(knockReady) */StartCoroutine(KnockBackObject(hitPoint));
 
         if (Health <= 0)
         {

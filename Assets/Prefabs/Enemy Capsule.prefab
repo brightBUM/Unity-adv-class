@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarUI: {fileID: 8000422538260956878}
-  knockBackForce: 1
+  knockBackForce: 0.25
   agent: {fileID: 7759133906734037883}
   knockSwitchTime: 0.5
 --- !u!195 &7759133906734037883

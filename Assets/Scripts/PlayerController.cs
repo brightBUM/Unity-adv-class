@@ -76,11 +76,15 @@ public class PlayerController : MonoBehaviour
             if(Physics.Raycast(transform.position,transform.forward, out RaycastHit hitInfo))
             {
                 inRange = true;
-                var damageable = hitInfo.collider.GetComponent<IDamageable>();
-                if (damageable!=null)
+                var damageables = hitInfo.collider.GetComponents<IDamageable>();
+                foreach(var damageable in damageables)
                 {
-                    damageable.TakeDamage(25,hitInfo.point);
+                    if (damageable != null)
+                    {
+                        damageable.TakeDamage(25, hitInfo.point);
+                    }
                 }
+                
                 bulletTrace.GetComponent<BulletTrace>().Init(shootTransform.position, hitInfo.point,true);
                 //Debug.Break();
             }
