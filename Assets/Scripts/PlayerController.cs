@@ -9,11 +9,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotSpeed = 2f;
     [SerializeField] private float bulletSpeed = 5f;
     [SerializeField] private float rayCastDistance = 10f;
+    [SerializeField] private float fireRate = 0.1f;
+
     [SerializeField] LayerMask damageLayer;
     [SerializeField] Animator animator;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] ProgressBarUI progressBarUI;
     [SerializeField] ParticleSystem muzzleFlashVFX;
+    [SerializeField] GameObject bulletTracePrefab;
+    [SerializeField] Transform shootTransform;
     [SerializeField] int magSize = 7;
     [SerializeField] float reloadTime = 2f;
 
@@ -31,7 +35,8 @@ public class PlayerController : MonoBehaviour
     {
         playerInput.moveAction += Movement;
         playerInput.lookAction += Rotation;
-        playerInput.shootAction += Shooting;
+        playerInput.shootStartedAction += ShootStarted;
+        playerInput.shootCancelledAction += ShootReleased;
     }
 
 
@@ -42,31 +47,48 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         count = magSize;
     }
+    Coroutine fireCoroutine;
 
-    // Update is called once per frame
-    void Update()
+    private void ShootStarted()
     {
-        
-
+        fireCoroutine = StartCoroutine(AutoFire());
     }
 
+    private void ShootReleased()
+    {
+        if (fireCoroutine != null)
+            StopCoroutine(fireCoroutine);
+    }
+    IEnumerator AutoFire()
+    {
+        while (true)
+        {
+            Shooting();
+            yield return new WaitForSeconds(fireRate);
+        }
+    }
     private void Shooting()
     {
         if (count > 0)
         {
             muzzleFlashVFX.Play();
+            var bulletTrace = Instantiate(bulletTracePrefab, shootTransform.position, Quaternion.identity);
             if(Physics.Raycast(transform.position,transform.forward, out RaycastHit hitInfo))
             {
                 inRange = true;
                 var damageable = hitInfo.collider.GetComponent<IDamageable>();
                 if (damageable!=null)
                 {
-                    damageable.TakeDamage(10,hitInfo.point);
+                    damageable.TakeDamage(25,hitInfo.point);
                 }
+                bulletTrace.GetComponent<BulletTrace>().Init(shootTransform.position, hitInfo.point,true);
+                //Debug.Break();
             }
             else
             {
                 inRange = false;
+                bulletTrace.GetComponent<BulletTrace>().Init(shootTransform.position, shootTransform.position+transform.forward*50f,false);
+
             }
 
             count--;
@@ -142,7 +164,8 @@ public class PlayerController : MonoBehaviour
         //moveInput.action.performed -= MoveInputPerformed;
         playerInput.moveAction -= Movement;
         playerInput.lookAction -= Rotation;
-        playerInput.shootAction -= Shooting;
+        playerInput.shootStartedAction += ShootStarted;
+        playerInput.shootCancelledAction += ShootReleased;
 
     }
     private void OnDrawGizmos()

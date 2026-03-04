@@ -38,11 +38,11 @@ public class Knockable : MonoBehaviour, IDamageable
     IEnumerator HitFeedback()
     {
         float timer = 0f;
-        material.color = Color.red;
+        var startColor = Color.red;
 
         while (timer<fadeDuration)
         {
-            material.color = Color.Lerp(material.color, Color.white, timer/fadeDuration);
+            material.color = Color.Lerp(startColor, Color.white, timer/fadeDuration);
             timer += Time.deltaTime;
             yield return null;
         }

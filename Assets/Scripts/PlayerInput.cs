@@ -14,16 +14,23 @@ public class PlayerInput : MonoBehaviour
 
     public Action<Vector2> moveAction;
     public Action<Vector2> lookAction;
-    public Action shootAction;
+    public Action shootStartedAction;
+    public Action shootCancelledAction;
 
     private void OnEnable()
     {
-        shootInput.action.performed += ShootAction_performed;
+        shootInput.action.started += ShootAction_started;
+        shootInput.action.canceled += ShootAction_canceled;
     }
 
-    private void ShootAction_performed(InputAction.CallbackContext obj)
+    private void ShootAction_canceled(InputAction.CallbackContext obj)
     {
-        shootAction.Invoke();
+        shootCancelledAction.Invoke();
+    }
+
+    private void ShootAction_started(InputAction.CallbackContext obj)
+    {
+        shootStartedAction.Invoke();
     }
 
     private void Update()
@@ -37,7 +44,8 @@ public class PlayerInput : MonoBehaviour
 
     private void OnDisable()
     {
-        shootInput.action.performed -= ShootAction_performed;
+        shootInput.action.started  -= ShootAction_started;
+        shootInput.action.canceled -= ShootAction_canceled;
 
     }
 }
