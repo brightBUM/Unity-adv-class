@@ -7,6 +7,8 @@ public class Explodable : MonoBehaviour,IDamageable
     [SerializeField] float explosionRadius = 5f;
     [SerializeField] GameObject explosionVFX;
     [SerializeField] LayerMask damageLayer;
+    [SerializeField] GameObject debugCircle;
+    [SerializeField] bool debugRadius;
     bool triggered;
     public int Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
@@ -49,8 +51,9 @@ public class Explodable : MonoBehaviour,IDamageable
 
     private void OnDrawGizmos()
     {
-        
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
+        if (debugCircle == null) return;
+
+        debugCircle.SetActive(debugRadius ? true : false);
     }
 
 }
