@@ -3,56 +3,83 @@ using UnityEngine;
 
 public class Walljump : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float groundCastRadius;
+    [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float rotSpeed = 5f;
+    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float groundCastDistance = 5f;
+    [SerializeField] float wallCastDistance = 5f;
+    [SerializeField] float gravity = -20f;
+    //[SerializeField] float fallMultiplier = 2f;
     [SerializeField] Transform groundTransform;
+    [SerializeField] Vector3 groundBoxsize;
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask wallMask;
-    public float jumpHeight = 8f;
-    public float gravity = -30f;
-
-    public float fallMultiplier = 2f;     // faster fall
-    public float lowJumpMultiplier = 1f;  // optional
-
+    
     Rigidbody rb;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    Animator animator;
+    Vector3 targetRotation;
+
+    bool isGrounded;
+    bool inWallRange;
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        Physics.gravity = new Vector3(0, gravity, 0);
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        Movement();
+        GroundCheck();
+        WallCheck();
+    }
+    private void GroundCheck()
+    {
+        //groundCheck
 
-        rb.MovePosition(rb.position + move * Time.deltaTime * speed);
+        isGrounded = Physics.CheckBox(groundTransform.position, 
+                     groundBoxsize * 0.5f, Quaternion.identity, groundMask);
 
-        bool isGrounded = Physics.CheckSphere(groundTransform.position, groundCastRadius, groundMask);
+        //jump
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+        //rb.gravityScale = rb.linearVelocity.y < 0 ? fallMultiplier : 1f;
+    }
+    private void WallCheck()
+    {
+        //raycast in transform right
+        inWallRange = Physics.Raycast(transform.position,
+                                      transform.position + transform.right,
+                                      wallCastDistance, wallMask);
+    }
+    private void Movement()
+    {
+        // move left-right
+        float xInput = Input.GetAxis("Horizontal");
+        rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocity.y);
+
+        Quaternion targetQuaternion;
+        //flip the direction
         
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z);
-        }
-    }
+        if(xInput!=0f)
+            targetRotation = new Vector3(0f, xInput < 0 ? 180 : 0f, 0f);
 
-    private void FixedUpdate()
-    {
-        // Falling
-        if (rb.linearVelocity.y < 0)
-        {
-            rb.linearVelocity += Vector3.up * gravity * (fallMultiplier - 1) * Time.fixedDeltaTime;
-        }
-        // Going up
-        else if (rb.linearVelocity.y > 0)
-        {
-            rb.linearVelocity += Vector3.up * gravity * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
-        }
-    }
+        targetQuaternion = Quaternion.Euler(targetRotation);
 
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetQuaternion, rotSpeed * Time.deltaTime);
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(groundTransform.position, groundCastRadius);
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        
+        Gizmos.DrawCube(groundTransform.position, groundBoxsize);
+
+        Gizmos.color = inWallRange ? Color.green : Color.red;
+
+        Gizmos.DrawLine(transform.position, 
+            transform.position + transform.right * wallCastDistance);
     }
 }
