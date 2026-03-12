@@ -1,4 +1,3 @@
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class Walljump : MonoBehaviour
@@ -6,6 +5,7 @@ public class Walljump : MonoBehaviour
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float rotSpeed = 5f;
     [SerializeField] float jumpForce = 5f;
+    [SerializeField] float wallJumpForce = 5f;
     [SerializeField] float groundCastDistance = 5f;
     [SerializeField] float wallCastDistance = 5f;
     [SerializeField] float gravity = -20f;
@@ -31,30 +31,56 @@ public class Walljump : MonoBehaviour
     private void Update()
     {
         Movement();
-        GroundCheck();
-        WallCheck();
+        LayerCheckAndJump();
     }
-    private void GroundCheck()
+    private void LayerCheckAndJump()
     {
         //groundCheck
 
         isGrounded = Physics.CheckBox(groundTransform.position, 
                      groundBoxsize * 0.5f, Quaternion.identity, groundMask);
 
+        //raycast in transform right
+        var rayDirection = (transform.position + transform.right) - transform.position;
+        inWallRange = Physics.Raycast(transform.position,
+                                      rayDirection,
+                                      wallCastDistance, wallMask);
         //jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            if(isGrounded)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+
+            }
+            else if(inWallRange)
+            {
+                Vector3 jumpDirection;
+                //diagonal jump
+                if (transform.rotation.y>=180)
+                {
+                    //left   
+                    jumpDirection = Vector3.right + Vector3.up;
+                }
+                else
+                {
+                    //right
+                    jumpDirection = -Vector3.right + Vector3.up;
+
+                }
+
+                rb.linearVelocity = jumpDirection.normalized * wallJumpForce;
+            }
+
         }
+
+        //grounded - vertical
+        //grounded & wall in range- vertical
+        //not grounded & wall in range - diagonall jump 
+
         //rb.gravityScale = rb.linearVelocity.y < 0 ? fallMultiplier : 1f;
     }
-    private void WallCheck()
-    {
-        //raycast in transform right
-        inWallRange = Physics.Raycast(transform.position,
-                                      transform.position + transform.right,
-                                      wallCastDistance, wallMask);
-    }
+    
     private void Movement()
     {
         // move left-right
