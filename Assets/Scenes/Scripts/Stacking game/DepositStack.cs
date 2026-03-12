@@ -21,7 +21,6 @@ public class DepositStack : MonoBehaviour
 
         currentPlayer = player;
 
-        // Only start if no transfer is already running
         if (transferRoutine == null)
             transferRoutine = StartCoroutine(TransferItems());
     }
@@ -32,7 +31,6 @@ public class DepositStack : MonoBehaviour
 
         if (player == null) return;
 
-        // Player left — stop transferring
         //if (transferRoutine != null)
         //{
         //    StopCoroutine(transferRoutine);
@@ -56,6 +54,18 @@ public class DepositStack : MonoBehaviour
 
             item.SetParent(stackParent);
 
+            // Keep kinematic while animating into deposit position
+            Rigidbody itemRb = item.GetComponent<Rigidbody>();
+            if (itemRb != null)
+            {
+                itemRb.isKinematic = true;
+                itemRb.linearVelocity = Vector3.zero;
+                itemRb.angularVelocity = Vector3.zero;
+            }
+
+            // Switch layer so it won't re-trigger this deposit zone
+            item.gameObject.layer = 0;
+
             Vector3 target = holdTransform.localPosition;
 
             yield return Move(item, target);
@@ -63,8 +73,6 @@ public class DepositStack : MonoBehaviour
             holdTransform.localPosition += Vector3.up * 0.6f;
 
             depositedItems.Add(item);
-
-            //item.GetComponent<Collider>().enabled = true;
 
             yield return new WaitForSeconds(0.05f);
         }

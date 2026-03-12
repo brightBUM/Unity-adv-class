@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\Scripts\Knockable.cs" />
     <Compile Include="Assets\Scripts\Destroyable.cs" />
+    <Compile Include="Assets\Scenes\Scripts\Stacking game\WreckingBall.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyBelowY.cs" />
     <Compile Include="Assets\Scenes\Scripts\RotateObject.cs" />
     <Compile Include="Assets\Scripts\IDamageable.cs" />
