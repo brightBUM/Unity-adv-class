@@ -176,6 +176,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a3ea4a24542da4fbc5edb36268b9af, type: 3}
+--- !u!1 &205606521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205606522}
+  m_Layer: 0
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &205606522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205606521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230223078
 GameObject:
   m_ObjectHideFlags: 0
@@ -5596,6 +5627,8 @@ MonoBehaviour:
   xBound: 8.3
   bulletSpeed: 10
   bulletlifeTime: 1.5
+  recoilAmount: 0.1
+  recoilTime: 0.1
   projectile: {fileID: 2859011812173545890, guid: 27161dd37b339a3458b07551c734c524, type: 3}
   spawnTransform: {fileID: 485995840}
   scoreText: {fileID: 289928975}
@@ -5608,7 +5641,7 @@ Transform:
   m_GameObject: {fileID: 501877510}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.63, z: 0}
+  m_LocalPosition: {x: 0, y: -2.753, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6246,3 +6279,4 @@ SceneRoots:
   - {fileID: 472776152}
   - {fileID: 1268778123}
   - {fileID: 424085536}
+  - {fileID: 205606522}

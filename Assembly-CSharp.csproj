@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\BulletTrace.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
+    <Compile Include="Assets\Scripts\spaceshooter\Enemy.cs" />
     <Compile Include="Assets\Scripts\Knockable.cs" />
     <Compile Include="Assets\Scripts\Destroyable.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyBelowY.cs" />
@@ -77,15 +78,14 @@
     <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\PlayerInput.cs" />
     <Compile Include="Assets\PBS Materials Variety Pack\zzz\MaterialRandomizer.cs" />
-    <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyOnClick.cs" />
-    <Compile Include="Assets\PlayerShip.cs" />
     <Compile Include="Assets\Scripts\EnemySpawner.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\DestroyOnHit.cs" />
     <Compile Include="Assets\Hovl Studio\Toon Projectiles 2\Scripts\AutoDestroyPS.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\CrateGridBuilder.cs" />
     <Compile Include="Assets\Scenes\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Hovl Studio\Toon Projectiles 2\Scripts\ProjectileMover.cs" />
+    <Compile Include="Assets\Scripts\spaceshooter\PlayerShip.cs" />
     <Compile Include="Assets\Scripts\Explodable.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
   </ItemGroup>

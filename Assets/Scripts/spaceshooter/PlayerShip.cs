@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerShip : MonoBehaviour
@@ -8,6 +9,8 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float xBound = 8.3f;
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] float bulletlifeTime = 1f;
+    [SerializeField] float recoilAmount = 0.2f;
+    [SerializeField] float recoilTime = 0.25f;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform spawnTransform;
     [SerializeField] TextMeshProUGUI scoreText;
@@ -20,12 +23,13 @@ public class PlayerShip : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        StartCoroutine(CoroutineTest());
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         xMove = Input.GetAxis("Horizontal");
 
         //transform 
@@ -47,17 +51,19 @@ public class PlayerShip : MonoBehaviour
             Destroy(spawnObject, bulletlifeTime);
 
             //recoil visual
-
+            StartCoroutine(RecoilFeedback());
         }
         
     }
-    IEnumerator CoroutineTest()
+    //never call on update directly
+    IEnumerator RecoilFeedback()
     {
-        Debug.Log("before");
-        yield return new WaitForSeconds(1f);
-        Debug.Log("after");
-        yield return new WaitForSeconds(2f);
-        Debug.Log("some time later");
+        //move ship down
+        transform.position += Vector3.down * recoilAmount;
+        yield return new WaitForSeconds(recoilTime);
+        transform.position += Vector3.up * recoilAmount;
+       
+        //move ship back to original y pos
     }
     private void FixedUpdate()
     {
