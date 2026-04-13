@@ -13,6 +13,7 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float recoilTime = 0.25f;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform spawnTransform;
+    [SerializeField] AudioSource shipAudioSource;
     [SerializeField] TextMeshProUGUI scoreText;
     Rigidbody2D rb;
     float xMove;
@@ -52,6 +53,9 @@ public class PlayerShip : MonoBehaviour
 
             //recoil visual
             StartCoroutine(RecoilFeedback());
+
+            //sfx
+            shipAudioSource.Play();
         }
         
     }
