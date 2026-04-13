@@ -6,9 +6,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] float vfxDestroyDelay;
     [SerializeField] GameObject coinPrefab;
     [SerializeField] float coinLifeTime =2f;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+       
         
     }
 
@@ -32,6 +34,11 @@ public class Enemy : MonoBehaviour
         GameObject vfxObject = Instantiate(destroyVFX, transform.position, Quaternion.identity);
         Destroy(vfxObject, vfxDestroyDelay);
 
-
+        WaveSpawner.instance.enemiesAlive--;
+        if(WaveSpawner.instance.enemiesAlive<=0)
+        {
+            WaveSpawner.instance.TriggerNewWave();
+        }
+        Debug.Log("enemiesAlive : " + WaveSpawner.instance.enemiesAlive);
     }
 }
