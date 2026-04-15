@@ -8,24 +8,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject coinPrefab;
     [SerializeField] float coinLifeTime =2f;
     bool destroyed;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-       
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Projectile"))
+        if (collision.gameObject.CompareTag("Projectile"))
         {
-            if(!destroyed)
+            if (!destroyed)
             {
                 //destroy both
                 Destroy(collision.gameObject);
@@ -47,8 +35,8 @@ public class Enemy : MonoBehaviour
                 Debug.Log("enemiesAlive : " + WaveSpawner.instance.enemiesAlive);
                 destroyed = true;
             }
-            
+
         }
-        
     }
+    
 }

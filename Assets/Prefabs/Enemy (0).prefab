@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6329613772786677755}
   - component: {fileID: 6880225025357947473}
   m_Layer: 0
-  m_Name: spaceMeteors_001
+  m_Name: Enemy (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -190,3 +190,4 @@ MonoBehaviour:
   destroyVFX: {fileID: 5567425272391013849, guid: 33b7ee2d0aa4d5146a8a41f06d32e448, type: 3}
   vfxDestroyDelay: 0.4
   coinPrefab: {fileID: 8330301980260511115, guid: 28104b03f9c32254ea71181027760983, type: 3}
+  coinLifeTime: 2
