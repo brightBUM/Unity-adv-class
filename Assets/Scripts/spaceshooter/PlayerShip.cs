@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,18 +13,27 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float recoilAmount = 0.2f;
     [SerializeField] float recoilTime = 0.25f;
     [SerializeField] GameObject projectile;
-    [SerializeField] Transform spawnTransform;
+    [SerializeField] List<Transform> spawnTransforms;
     [SerializeField] AudioSource shipAudioSource;
     [SerializeField] TextMeshProUGUI scoreText;
     Rigidbody2D rb;
     float xMove;
+    List<List<int>> spawnPointGroup = new List<List<int>> 
+    {
+        new List<int>{0},
+        new List<int>{1,2},
+        new List<int>{0,1,2},
+        new List<int>{1,2,3,4},
+        new List<int>{0,1,2,3,4},
 
+    };
+    int spawnPointGroupIndex;
     int score;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        spawnPointGroupIndex = 0;
     }
 
     // Update is called once per frame
@@ -46,10 +56,7 @@ public class PlayerShip : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             //Debug.Break();
-            GameObject spawnObject = Instantiate(projectile,spawnTransform.position,Quaternion.identity);
-            Rigidbody2D spawnObjectRB = spawnObject.GetComponent<Rigidbody2D>();
-            spawnObjectRB.linearVelocity = Vector2.up * bulletSpeed;
-            Destroy(spawnObject, bulletlifeTime);
+            SpawnBullet();
 
             //recoil visual
             StartCoroutine(RecoilFeedback());
@@ -57,8 +64,28 @@ public class PlayerShip : MonoBehaviour
             //sfx
             shipAudioSource.Play();
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            spawnPointGroupIndex++;
+
+        }
+    }
+
+    private void SpawnBullet()
+    {
+        for (int i = 0; i < spawnPointGroup[spawnPointGroupIndex].Count; i++)
+        {
+            var j = spawnPointGroup[spawnPointGroupIndex][i];
+            var spawnPos = spawnTransforms[j].position;
+            GameObject spawnObject = Instantiate(projectile, spawnPos, Quaternion.identity);
+            Rigidbody2D spawnObjectRB = spawnObject.GetComponent<Rigidbody2D>();
+            spawnObjectRB.linearVelocity = Vector2.up * bulletSpeed;
+            Destroy(spawnObject, bulletlifeTime);
+        }
+
         
     }
+
     //never call on update directly
     IEnumerator RecoilFeedback()
     {
