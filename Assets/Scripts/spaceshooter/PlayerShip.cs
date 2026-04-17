@@ -77,10 +77,15 @@ public class PlayerShip : MonoBehaviour
         {
             var j = spawnPointGroup[spawnPointGroupIndex][i];
             var spawnPos = spawnTransforms[j].position;
-            GameObject spawnObject = Instantiate(projectile, spawnPos, Quaternion.identity);
+
+            GameObject spawnObject = ObjectPoolManager.Instance.Spawn(0, spawnPos, Quaternion.identity);
+            //GameObject spawnObject = Instantiate(projectile, spawnPos, Quaternion.identity);
+
             Rigidbody2D spawnObjectRB = spawnObject.GetComponent<Rigidbody2D>();
             spawnObjectRB.linearVelocity = Vector2.up * bulletSpeed;
-            Destroy(spawnObject, bulletlifeTime);
+
+            //Destroy(spawnObject, bulletlifeTime);
+            ObjectPoolManager.Instance.Despawn(spawnObject, bulletlifeTime);
         }
 
         

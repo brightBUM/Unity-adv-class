@@ -68,6 +68,7 @@
     <Compile Include="Assets\PBS Materials Variety Pack\zzz\MaterialRandomizerScript.cs" />
     <Compile Include="Assets\InputSystem_Actions.cs" />
     <Compile Include="Assets\Scripts\BulletTrace.cs" />
+    <Compile Include="Assets\Scripts\spaceshooter\ObjectPoolManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\Scripts\spaceshooter\Enemy.cs" />
