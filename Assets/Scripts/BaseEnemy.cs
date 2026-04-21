@@ -1,18 +1,31 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+
+enum EnemyState
+{
+    CHASE,
+    ATTACK,
+    DAMAGE,
+    DIE
+}
 
 public class BaseEnemy : MonoBehaviour,IDamageable
 {
     [SerializeField] ProgressBarUI healthBarUI;
     [SerializeField] float knockBackForce;
     [SerializeField] NavMeshAgent agent;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] Animator animator;
     [SerializeField] float knockSwitchTime = 0.2f;
+    [SerializeField] float timeBWattacks = 0.2f;
+    [SerializeField] EnemyState enemyState;
     int maxHealth = 100;
     Rigidbody rb;
-    Transform playerTransform;
     bool knockReady = true;
+    bool attackinProgress;
     public int Health 
     { 
         get;
@@ -26,10 +39,14 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     public void Init(Transform playerTransform)
     {
         this.playerTransform = playerTransform;
+        enemyState = EnemyState.CHASE;
+
+        if (agent.enabled && agent.isOnNavMesh)
+            agent.SetDestination(playerTransform.position);
     }
     public void Die()
     {
-        Debug.Log(transform.name + " died");
+        //play animation , then destroy after death animation
         Destroy(gameObject);
     }
 
@@ -48,8 +65,76 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     }
     private void Update()
     {
-        if(agent.enabled && agent.isOnNavMesh)
+        if (agent.enabled && agent.isOnNavMesh)
             agent.SetDestination(playerTransform.position);
+
+
+        switch (enemyState)
+        {
+            case EnemyState.CHASE:
+
+                //entry - on state initialization
+                animator.SetBool("run", true);
+
+                //update
+                
+
+                //exit
+                agent.updateRotation = true;
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    //attack
+                    enemyState = EnemyState.ATTACK;
+
+                }
+                break;
+
+            case EnemyState.ATTACK:
+
+                //entry
+                
+
+                //update 
+                if (!attackinProgress)
+                {
+                    StartCoroutine(PerformAttack());
+                }
+
+                //exit
+                //if player not in range 
+                if (agent.remainingDistance > agent.stoppingDistance)
+                {
+                    //attack
+                    enemyState = EnemyState.CHASE;
+
+                }
+                break;
+            case EnemyState.DAMAGE:
+
+
+
+                break;
+            case EnemyState.DIE:
+
+
+
+                break;
+        }
+
+        
+
+        
+    }
+
+    IEnumerator PerformAttack()
+    {
+        attackinProgress = true;
+        animator.SetTrigger("attack");
+
+        yield return new WaitForSeconds(timeBWattacks);
+
+        attackinProgress = false;
+
     }
     private void UpdateHealth(int amount)
     {

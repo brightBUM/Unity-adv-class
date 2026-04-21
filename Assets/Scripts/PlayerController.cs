@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using System;
+using Unity.VisualScripting;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerInput playerInput;
@@ -20,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform shootTransform;
     [SerializeField] int magSize = 7;
     [SerializeField] float reloadTime = 2f;
+
+    [SerializeField] GameObject pistolModel;
+    [SerializeField] GameObject rifleModel;
 
     //private fields
     int count;
@@ -176,5 +180,14 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = inRange ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * rayCastDistance);
+    }
+
+    [ContextMenu("trigger rifle")]
+    public void EquipRifle()
+    {
+        pistolModel.SetActive(false);
+        rifleModel.SetActive(true);
+
+        animator.SetLayerWeight(1, 1);
     }
 }
