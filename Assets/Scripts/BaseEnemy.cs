@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
 enum EnemyState
 {
+    SPAWN,
     CHASE,
     ATTACK,
     DAMAGE,
@@ -36,26 +36,81 @@ public class BaseEnemy : MonoBehaviour,IDamageable
         Health = maxHealth;
         rb = GetComponent<Rigidbody>();
     }
-    public void Init(Transform playerTransform)
+    public void Init(Transform playerTransform, Vector3 targetPos)
     {
+        StartCoroutine(SpawnToPosition(playerTransform,targetPos));
+    }
+    IEnumerator SpawnToPosition(Transform playerTransform, Vector3 targetPos)
+    {
+
+        float timer = 0f;
+        while (timer < 0.75f)
+        {
+            //Debug.Break();
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, 3f * Time.deltaTime);
+            timer+= Time.deltaTime;
+            yield return null;
+        }
+
+
+        agent.enabled = true;
+
+        //transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+
         this.playerTransform = playerTransform;
         enemyState = EnemyState.CHASE;
-
+        
+        
         if (agent.enabled && agent.isOnNavMesh)
             agent.SetDestination(playerTransform.position);
+
+        GetComponent<CapsuleCollider>().enabled = true;
     }
     public void Die()
     {
+        //Debug.Break();
+        if (agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            agent.enabled = false;
+            GetComponent<CapsuleCollider>().enabled = false;
+        }
+        healthBarUI.ToggleProgressBar(false);
+        enemyState = EnemyState.DIE;
+
         //play animation , then destroy after death animation
-        Destroy(gameObject);
+        animator.ResetTrigger("hit");
+        animator.SetTrigger("death");
+        var randomNum = Random.Range(1, 3);
+        //Debug.Log($"death index : {randomNum}");
+        animator.SetInteger("deathIndex", randomNum);
     }
 
     public void TakeDamage(int amount , Vector3 hitPoint)
     {
+        if(enemyState==EnemyState.DIE)
+            return;
+
         UpdateHealth(amount);
 
-        /*if(knockReady) */StartCoroutine(KnockBackObject(hitPoint));
+        if(knockReady)
+        {
+            knockReady = false;
+            enemyState = EnemyState.DAMAGE;
 
+            //STOP movement immediately
+            if (agent.enabled && agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                agent.velocity = Vector3.zero;
+            }
+
+            animator.SetTrigger("hit");
+            KnockBackObject(hitPoint);
+        }
+
+        //Debug.Break();
         if (Health <= 0)
         {
             Die();
@@ -65,6 +120,9 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     }
     private void Update()
     {
+        if (enemyState == EnemyState.DAMAGE || enemyState == EnemyState.DIE)
+            return; 
+
         if (agent.enabled && agent.isOnNavMesh)
             agent.SetDestination(playerTransform.position);
 
@@ -142,9 +200,9 @@ public class BaseEnemy : MonoBehaviour,IDamageable
         healthBarUI.UpdateUIFillAmount((float)Health / maxHealth);
     }
 
-    private IEnumerator KnockBackObject(Vector3 hitPoint)
+    private void KnockBackObject(Vector3 hitPoint)
     {
-        knockReady = false;
+        
         var knockDirection = transform.position - playerTransform.position;
 
         //rb.AddForce(knockDirection.normalized * knockBackForce, ForceMode.Impulse);
@@ -154,9 +212,15 @@ public class BaseEnemy : MonoBehaviour,IDamageable
 
         agent.Warp(pos);
 
-        yield return new WaitForSeconds(2f);
-        knockReady = true;
-
     }
 
+    public void OnHitAnimComplete()
+    {
+        knockReady = true;
+        enemyState = EnemyState.CHASE;
+    }
+    public void OnDeathAnimComplete()
+    {
+        Destroy(gameObject);
+    }
 }
