@@ -187,7 +187,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     IEnumerator PerformAttack()
     {
         attackinProgress = true;
-        animator.SetTrigger("attack");
+        animator.SetBool("run", false);
 
         yield return new WaitForSeconds(timeBWattacks);
 

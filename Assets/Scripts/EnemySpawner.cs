@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject[] enemyPrefabs;
     [SerializeField] GameObject spawnVFX;
     [SerializeField] Transform playerTransform;
     [SerializeField] float timeBWSpawns;
@@ -41,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
 
                     Instantiate(spawnVFX, hit.position, spawnVFX.transform.rotation);
 
+                    var enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
                     var enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
                     enemy.GetComponent<BaseEnemy>().Init(playerTransform, hit.position);
                     spawnedOnNavMesh |= true;
@@ -54,6 +55,7 @@ public class EnemySpawner : MonoBehaviour
                 // fallback (in case all attempts fail)
                 Instantiate(spawnVFX, playerTransform.position, Quaternion.identity);
 
+                var enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
                 var enemy2 = Instantiate(enemyPrefab, playerTransform.position - Vector3.down * 2f, Quaternion.identity);
                 enemy2.GetComponent<BaseEnemy>().Init(playerTransform, playerTransform.position);
             }

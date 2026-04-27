@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameObject pistolModel;
     [SerializeField] GameObject rifleModel;
+    [SerializeField] Transform dummyTransform;
 
     //private fields
     int count;
@@ -142,7 +143,7 @@ public class PlayerController : MonoBehaviour
         if (groundPlane.Raycast(ray, out float enter))
         {
             hitPoint = ray.GetPoint(enter);
-            //dummyTransform.position = hitPoint;
+            dummyTransform.position = hitPoint;
 
             //rotation
             Vector3 direction = hitPoint - transform.position;
