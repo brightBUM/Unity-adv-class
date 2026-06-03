@@ -64,6 +64,7 @@
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\ArrayArrangement.cs" />
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\MoveCamForward.cs" />
     <Compile Include="Assets\Scripts\ProgressBarUI.cs" />
+    <Compile Include="Assets\IntroTrigger.cs" />
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\Inspector\AButtonAttribute.cs" />
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\Setup\SetupScriptBRP.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\Setup\FriesPostProcessorIdentifier.cs" />
     <Compile Include="Assets\Scripts\AnimationEventForward.cs" />
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\FencePlacement.cs" />
+    <Compile Include="Assets\Scripts\Vehicles\CarController.cs" />
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\LightSourceObject.cs" />
     <Compile Include="Assets\Scripts\Destroyable.cs" />
     <Compile Include="Assets\Scripts\IDamageable.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Assets\PBS Barrels and Crates\Scripts\CrateGridBuilder.cs" />
     <Compile Include="Assets\Scenes\Scripts\MoveObject.cs" />
     <Compile Include="Assets\Scripts\BaseEnemy.cs" />
+    <Compile Include="Assets\Scripts\Vehicles\CamCarTarget.cs" />
     <Compile Include="Assets\Fries and Seagull\City 03\Scene Props\Scripts\Inspector\IgnoreInInspectorAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

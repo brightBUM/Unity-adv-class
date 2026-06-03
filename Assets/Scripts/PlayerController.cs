@@ -162,10 +162,10 @@ public class PlayerController : MonoBehaviour
         Vector3 localMove = transform.InverseTransformDirection(worldMove);
         //local conversion only for the animator 
         animator.SetBool("move", worldMove.magnitude != 0f);
-        animator.SetFloat("moveX", localMove.x,0.1f,Time.deltaTime);
-        animator.SetFloat("moveY", localMove.z,0.1f, Time.deltaTime); //here Y is Z
+        animator.SetFloat("moveX", -localMove.x,0.1f,Time.deltaTime);
+        animator.SetFloat("moveY", -localMove.z,0.1f, Time.deltaTime); //here Y is Z
 
-        characterController.Move(worldMove * Time.deltaTime * moveSpeed);
+        characterController.Move(-worldMove * Time.deltaTime * moveSpeed);
     }
 
     private void OnDisable()

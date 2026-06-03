@@ -6,14 +6,16 @@ using UnityEngine.AI;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] enemyPrefabs;
+    [SerializeField] Transform[] spawnPoints;
     [SerializeField] GameObject spawnVFX;
     [SerializeField] Transform playerTransform;
     [SerializeField] float timeBWSpawns;
     [SerializeField] bool spawnActive;
+    int count;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine((SpawnEnemies()));
+        //StartCoroutine((SpawnEnemies()));
     }
     float radius = 10.0f;
     IEnumerator SpawnEnemies()
@@ -80,5 +82,16 @@ public class EnemySpawner : MonoBehaviour
             
         }
 
+    }
+
+    public void SpawnOnTrigger()
+    {
+        Debug.Log("spawn enemy triggered");
+        var enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        var spawnTransform = spawnPoints[count];
+        Instantiate(spawnVFX, spawnTransform.position, spawnVFX.transform.rotation);
+        var enemy = Instantiate(enemyPrefab, spawnTransform.position+ Vector3.down * 2f, Quaternion.identity);
+        enemy.GetComponent<BaseEnemy>().Init(playerTransform, spawnTransform.position);
+        count++;
     }
 }
