@@ -41,9 +41,9 @@ public class ObjectPoolManager : MonoBehaviour
         {
             if(!poolObject.activeInHierarchy)
             {
-                poolObject.SetActive(true);
                 poolObject.transform.localPosition = position;
                 poolObject.transform.localRotation = rotation;
+                poolObject.SetActive(true);
                 return poolObject;
             }
         }

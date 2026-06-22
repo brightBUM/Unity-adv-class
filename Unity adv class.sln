@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.LevelPlay.Editor", "Unity.LevelPlay.Editor.csproj", "{65C91D32-0368-D23F-8089-327ADE3DB40C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.LevelPlay", "Unity.LevelPlay.csproj", "{95456EBF-FAAA-4CD9-8334-54D45462EDF2}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{63BED2BC-C08E-69CA-90F9-CE6B9ACD8829}"
 EndProject
 Global
@@ -9,6 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65C91D32-0368-D23F-8089-327ADE3DB40C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65C91D32-0368-D23F-8089-327ADE3DB40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65C91D32-0368-D23F-8089-327ADE3DB40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65C91D32-0368-D23F-8089-327ADE3DB40C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95456EBF-FAAA-4CD9-8334-54D45462EDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95456EBF-FAAA-4CD9-8334-54D45462EDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95456EBF-FAAA-4CD9-8334-54D45462EDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95456EBF-FAAA-4CD9-8334-54D45462EDF2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63BED2BC-C08E-69CA-90F9-CE6B9ACD8829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63BED2BC-C08E-69CA-90F9-CE6B9ACD8829}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63BED2BC-C08E-69CA-90F9-CE6B9ACD8829}.Release|Any CPU.ActiveCfg = Release|Any CPU

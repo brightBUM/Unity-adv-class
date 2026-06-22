@@ -12,10 +12,10 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] float bulletlifeTime = 1f;
     [SerializeField] float recoilAmount = 0.2f;
     [SerializeField] float recoilTime = 0.25f;
-    [SerializeField] GameObject projectile;
     [SerializeField] List<Transform> spawnTransforms;
     [SerializeField] AudioSource shipAudioSource;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] Leaderboard Leaderboard;
     Rigidbody2D rb;
     float xMove;
     List<List<int>> spawnPointGroup = new List<List<int>> 
@@ -112,10 +112,37 @@ public class PlayerShip : MonoBehaviour
     {
         if(collision.CompareTag("Coin"))
         {
-            Destroy(collision.gameObject);
+            ObjectPoolManager.Instance.Despawn(collision.gameObject,0);
+
             score++;
             scoreText.text = score.ToString();
         }
+        if (collision.gameObject.CompareTag("EnemyProjectile"))
+        {
+            //trigger leaderboard
+            Leaderboard.IsNewHighScore(score);
+            //kill player 
+            Destroy(this.gameObject);
+        }
+       
 
+    }
+    public void WatchReward()
+    {
+        LevelPlaySample.instance.rewardedVideoAd.ShowAd();
+        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded += RewardedVideoAd_OnAdRewarded;
+    }
+
+    private void RewardedVideoAd_OnAdRewarded(Unity.Services.LevelPlay.LevelPlayAdInfo arg1, Unity.Services.LevelPlay.LevelPlayReward arg2)
+    {
+        DoubleCoins();
+        scoreText.text = score.ToString();
+        LevelPlaySample.instance.rewardedVideoAd.LoadAd();
+        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded -= RewardedVideoAd_OnAdRewarded;
+    }
+
+    public void DoubleCoins()
+    {
+        score += score ;
     }
 }
