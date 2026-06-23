@@ -73,6 +73,7 @@
     <Compile Include="Assets\LevelPlay\Samples\UnityLevelPlaySample\Scripts\LevelPlaySample.cs" />
     <Compile Include="Assets\Scripts\spaceshooter\Leaderboard.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\spaceshooter\LeaderBoardItem.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\Scripts\spaceshooter\Enemy.cs" />
     <Compile Include="Assets\Scripts\Knockable.cs" />

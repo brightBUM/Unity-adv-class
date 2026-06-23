@@ -7,21 +7,14 @@ using UnityEngine.UI;
 public class Leaderboard : MonoBehaviour
 {
     [SerializeField] LeaderBoardData leaderBoardData;
-    [SerializeField] GameObject leaderboardPrefab;
+    [SerializeField] GameObject highScorePanel;
+    [SerializeField] GameObject leaderBoardPanel;
+    [SerializeField] GameObject leaderBoardItemPrefab;
+    [SerializeField] Transform contentParent;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TMP_InputField nameInput;
     int score = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        leaderBoardData = SaveLoad.Instance.GetData();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     
     public void SetScore()
     {
@@ -31,6 +24,20 @@ public class Leaderboard : MonoBehaviour
         leaderBoardData.playerData.Add(playerBase);
         SaveLoad.Instance.SaveGame();
     }
+
+    public void PopulateLeaderBoardUI()
+    {
+        var size = leaderBoardData.playerData.Count;
+        var playerData = leaderBoardData.playerData;
+        playerData.Sort((a, b) => b.score.CompareTo(a.score));
+
+        for (int i = 0; i < size; i++)
+        {
+            var leaderboardItemObject = Instantiate(leaderBoardItemPrefab,contentParent);
+            var leaderBoardItem = leaderboardItemObject.GetComponent<LeaderBoardItem>();
+            leaderBoardItem.SetUIData(i + 1, playerData[i].name, playerData[i].score);
+        }
+    }
     public int GetHighestScore()
     {
         //sort the list , find the highest score
@@ -38,7 +45,14 @@ public class Leaderboard : MonoBehaviour
     }
     public bool IsNewHighScore( int score)
     {
-        leaderboardPrefab.SetActive(true);
+        leaderBoardData = SaveLoad.Instance.GetData();
+        if(score<=0)
+        {
+            CloseHighScore();
+        }
+
+
+        highScorePanel.SetActive(true);
         this.score = score;
         scoreText.text = this.score.ToString();
         //check if current score is higher than existing high score
@@ -46,9 +60,12 @@ public class Leaderboard : MonoBehaviour
     }
     public void CloseHighScore()
     {
-        leaderboardPrefab.SetActive(false);
-
+        highScorePanel.SetActive(false);
+        leaderBoardPanel.SetActive(true);
+        PopulateLeaderBoardUI();
     }
+
+    
 }
 [System.Serializable]
 public class LeaderBoardData
