@@ -9,7 +9,7 @@ public class LeaderBoardItem : MonoBehaviour
     
     public void SetUIData(int rank,string name,int score)
     {
-        this.rankText.text = rank.ToString();
+        this.rankText.text = "#"+rank.ToString();
         this.nameText.text = name;
         this.scoreText.text = score.ToString();
     }

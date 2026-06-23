@@ -127,22 +127,7 @@ public class PlayerShip : MonoBehaviour
        
 
     }
-    public void WatchReward()
-    {
-        LevelPlaySample.instance.rewardedVideoAd.ShowAd();
-        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded += RewardedVideoAd_OnAdRewarded;
-    }
+    
 
-    private void RewardedVideoAd_OnAdRewarded(Unity.Services.LevelPlay.LevelPlayAdInfo arg1, Unity.Services.LevelPlay.LevelPlayReward arg2)
-    {
-        DoubleCoins();
-        scoreText.text = score.ToString();
-        LevelPlaySample.instance.rewardedVideoAd.LoadAd();
-        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded -= RewardedVideoAd_OnAdRewarded;
-    }
-
-    public void DoubleCoins()
-    {
-        score += score ;
-    }
+    
 }

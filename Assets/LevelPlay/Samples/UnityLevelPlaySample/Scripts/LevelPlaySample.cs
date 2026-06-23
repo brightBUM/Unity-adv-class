@@ -39,43 +39,19 @@ public class LevelPlaySample : MonoBehaviour
         // Create Rewarded Video object
         rewardedVideoAd = new LevelPlayRewardedAd(AdConfig.RewardedVideoAdUnitId);
         rewardedVideoAd.LoadAd();
-        // Register to Rewarded Video events
-        rewardedVideoAd.OnAdLoaded += RewardedVideoOnLoadedEvent;
-        rewardedVideoAd.OnAdLoadFailed += RewardedVideoOnAdLoadFailedEvent;
-        rewardedVideoAd.OnAdDisplayed += RewardedVideoOnAdDisplayedEvent;
-        rewardedVideoAd.OnAdDisplayFailed += RewardedVideoOnAdDisplayedFailedEvent;
-        rewardedVideoAd.OnAdRewarded += RewardedVideoOnAdRewardedEvent;
-        rewardedVideoAd.OnAdClicked += RewardedVideoOnAdClickedEvent;
-        rewardedVideoAd.OnAdClosed += RewardedVideoOnAdClosedEvent;
-        rewardedVideoAd.OnAdInfoChanged += RewardedVideoOnAdInfoChangedEvent;
+       
 
         // Create Banner object
         bannerAd = new LevelPlayBannerAd(AdConfig.BannerAdUnitId);
-        //bannerAd.LoadAd();
         //bannerAd.ShowAd();
-        // Register to Banner events
-        bannerAd.OnAdLoaded += BannerOnAdLoadedEvent;
-        bannerAd.OnAdLoadFailed += BannerOnAdLoadFailedEvent;
-        bannerAd.OnAdDisplayed += BannerOnAdDisplayedEvent;
-        bannerAd.OnAdDisplayFailed += BannerOnAdDisplayFailedEvent;
-        bannerAd.OnAdClicked += BannerOnAdClickedEvent;
-        bannerAd.OnAdCollapsed += BannerOnAdCollapsedEvent;
-        bannerAd.OnAdLeftApplication += BannerOnAdLeftApplicationEvent;
-        bannerAd.OnAdExpanded += BannerOnAdExpandedEvent;
+
 
         // Create Interstitial object
         interstitialAd = new LevelPlayInterstitialAd(AdConfig.InterstitalAdUnitId);
         interstitialAd.LoadAd();
 
 
-        // Register to Interstitial events
-        interstitialAd.OnAdLoaded += InterstitialOnAdLoadedEvent;
-        interstitialAd.OnAdLoadFailed += InterstitialOnAdLoadFailedEvent;
-        interstitialAd.OnAdDisplayed += InterstitialOnAdDisplayedEvent;
-        interstitialAd.OnAdDisplayFailed += InterstitialOnAdDisplayFailedEvent;
-        interstitialAd.OnAdClicked += InterstitialOnAdClickedEvent;
-        interstitialAd.OnAdClosed += InterstitialOnAdClosedEvent;
-        interstitialAd.OnAdInfoChanged += InterstitialOnAdInfoChangedEvent;
+        
     }
 
     public void OnGUI()

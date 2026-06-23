@@ -11,14 +11,14 @@ public class SaveLoad : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        filePath = Application.persistentDataPath + "/" + fileName;
+        //Directory.CreateDirectory(filePath);
         
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        filePath = Application.persistentDataPath + "/" + fileName;
-        //Directory.CreateDirectory(filePath);
-        if (File.Exists(filePath))
+        if (CheckFileExist())
         {
             //get data
             LoadFromFile();
@@ -44,13 +44,15 @@ public class SaveLoad : MonoBehaviour
         string data = File.ReadAllText(filePath);
         leaderBoardData = JsonUtility.FromJson<LeaderBoardData>(data);
 
-        
         Debug.Log("Game loaded from file");
+        Leaderboard.OnFileLoad?.Invoke();
     }
     public void SaveGame()
     {
         string data = JsonUtility.ToJson(leaderBoardData, true);
         File.WriteAllText(filePath, data);
         Debug.Log("Game saved");
+        Leaderboard.OnFileLoad?.Invoke();
+
     }
 }

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,8 +15,15 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TMP_InputField nameInput;
     int score = 0;
-    
-    
+    public static Action OnFileLoad;
+
+    private void OnEnable()
+    {
+        OnFileLoad += GetDataOnFileLoad;
+    }
+    private void Start()
+    {
+    }
     public void SetScore()
     {
         Debug.Log("submit ");
@@ -24,7 +32,10 @@ public class Leaderboard : MonoBehaviour
         leaderBoardData.playerData.Add(playerBase);
         SaveLoad.Instance.SaveGame();
     }
-
+    private void GetDataOnFileLoad()
+    {
+        leaderBoardData = SaveLoad.Instance.GetData();
+    }
     public void PopulateLeaderBoardUI()
     {
         var size = leaderBoardData.playerData.Count;
@@ -38,34 +49,59 @@ public class Leaderboard : MonoBehaviour
             leaderBoardItem.SetUIData(i + 1, playerData[i].name, playerData[i].score);
         }
     }
-    public int GetHighestScore()
-    {
-        //sort the list , find the highest score
-        return 0;
-    }
+   
     public bool IsNewHighScore( int score)
     {
-        leaderBoardData = SaveLoad.Instance.GetData();
-        if(score<=0)
-        {
-            CloseHighScore();
-        }
-
-
-        highScorePanel.SetActive(true);
         this.score = score;
         scoreText.text = this.score.ToString();
         //check if current score is higher than existing high score
+
+        if (score<=0)
+        {
+            CloseHighScore();
+        }
+        ShowHighScore();
+        
         return false;
+    }
+    public void WatchReward()
+    {
+        LevelPlaySample.instance.rewardedVideoAd.ShowAd();
+        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded += RewardedVideoAd_OnAdRewarded;
+    }
+
+
+    private void RewardedVideoAd_OnAdRewarded(Unity.Services.LevelPlay.LevelPlayAdInfo arg1, Unity.Services.LevelPlay.LevelPlayReward arg2)
+    {
+        DoubleCoins();
+        scoreText.text = score.ToString();
+        LevelPlaySample.instance.rewardedVideoAd.LoadAd();
+        LevelPlaySample.instance.rewardedVideoAd.OnAdRewarded -= RewardedVideoAd_OnAdRewarded;
+    }
+    public void DoubleCoins()
+    {
+        score += score;
+    }
+    public void ShowHighScore()
+    {
+        LevelPlaySample.instance.bannerAd.LoadAd();
+        highScorePanel.SetActive(true);
+
     }
     public void CloseHighScore()
     {
         highScorePanel.SetActive(false);
         leaderBoardPanel.SetActive(true);
         PopulateLeaderBoardUI();
+        LevelPlaySample.instance.bannerAd.HideAd();
+    }
+    private void OnDisable()
+    {
+        OnFileLoad -= GetDataOnFileLoad;
+
+
     }
 
-    
 }
 [System.Serializable]
 public class LeaderBoardData

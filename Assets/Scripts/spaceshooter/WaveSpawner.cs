@@ -8,7 +8,6 @@ using UnityEngine;
 //keeps tracks of the wave completion
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject[] enemyPrefabs;
     [SerializeField] GameObject waveUIObject;
     [SerializeField] TextMeshProUGUI waveNumUI;
     [SerializeField] Transform gridPosStart;
@@ -36,30 +35,7 @@ public class WaveSpawner : MonoBehaviour
         StartCoroutine(WaveFlash());
         //spawn enemies
     }
-    private void SpawnEnemies()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                Vector3 spawnPos = gridPosStart.position;
-                spawnPos += Vector3.right * i * xOffset;
-                spawnPos += Vector3.down * j * yOffset;
-                var enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-                var enemyObject = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-                enemies.Add(enemyObject.GetComponent<Enemy>());
-            }
-
-        }
-
-        if(bombDropCoroutine!=null)
-        {
-            StopCoroutine(bombDropCoroutine);
-            bombDropCoroutine = null;
-        }
-        bombDropCoroutine = StartCoroutine(BombDrop());
-    }
-
+    
     IEnumerator WaveFlash()
     {
         //set wave no.
@@ -78,6 +54,30 @@ public class WaveSpawner : MonoBehaviour
 
         SpawnEnemies();
     }
+    private void SpawnEnemies()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                Vector3 spawnPos = gridPosStart.position;
+                spawnPos += Vector3.right * i * xOffset;
+                spawnPos += Vector3.down * j * yOffset;
+
+                var enemyPrefab = ObjectPoolManager.Instance.Spawn(Random.Range(4, 7), spawnPos, Quaternion.identity);
+                enemies.Add(enemyPrefab.GetComponent<Enemy>());
+            }
+
+        }
+
+        if (bombDropCoroutine != null)
+        {
+            StopCoroutine(bombDropCoroutine);
+            bombDropCoroutine = null;
+        }
+        bombDropCoroutine = StartCoroutine(BombDrop());
+    }
+
     IEnumerator BombDrop()
     {
 
